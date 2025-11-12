@@ -1,0 +1,40 @@
+<!doctype html>
+<title>Kindle书库</title>
+<h1>📚 Kindle书库</h1>
+
+<form method="POST" action="/">
+    <input type="text" name="query" placeholder="Enter book title or keyword" value="{{ query or '' }}" size="50" required>
+    <button type="submit">Search</button>
+</form>
+
+<hr>
+
+{% if books %}
+    <h2>Results for "{{ query }}" ({{ books|length }} found)</h2>
+    <table border="1" cellpadding="10" cellspacing="0">
+        <thead>
+            <tr>
+                <th>SN</th>
+                <th>Title</th>
+                <th>ASIN</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('download', sn=book.sn) }}">
+                        {{ book.sn }}
+                    </a>
+                </td>
+                <td><strong>{{ book.name }}</strong></td>
+                <td>{{ book.asin or 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% elif query %}
+    <p>No books found matching "**{{ query }}**".</p>
+{% else %}
+    <p>Enter a book title or keyword to start searching.</p>
+{% endif %}
