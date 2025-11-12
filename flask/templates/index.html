@@ -10,7 +10,11 @@
 <hr>
 
 {% if books %}
-    <h2>Results for "{{ query }}" ({{ books|length }} found)</h2>
+    {% if query %}
+        <h2>Results for "{{ query }}" ({{ books|length }} found)</h2>
+    {% else %}
+        <h2>✨ 50 Random Books (Search above to filter)</h2>
+    {% endif %}
     <table border="1" cellpadding="10" cellspacing="0">
         <thead>
             <tr>

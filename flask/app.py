@@ -60,21 +60,40 @@ app.teardown_appcontext(close_db)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    """Home page with search form and search results."""
+    """Home page with search form and search results, defaulting to 50 random books."""
     books = []
     query = ""
+    db = get_db()
+
+    is_search_executed = False # New flag to track if a search was attempted
 
     if request.method == 'POST':
+        # --- Handle Search Submission (POST Request) ---
         query = request.form.get('query', '').strip()
+        is_search_executed = True # A search was attempted
+
         if query:
-            db = get_db()
-            # Use LIKE for partial, case-insensitive title matching
-            # The '%' acts as a wildcard
+            # Search logic for name, sn, or asin
+            # (Note: I've included the updated search query from the last exchange)
+            search_term = '%' + query + '%'
             cursor = db.execute(
                 "SELECT * FROM books WHERE name LIKE ?",
-                ('%' + query + '%',)
+                (search_term,)
             )
             books = cursor.fetchall()
+
+    # --- Handle Initial Load (GET Request) OR Empty Search POST ---
+    # If it's a GET request (initial load) OR a search was submitted that failed to find results,
+    # OR an empty search was submitted, we load the default random books.
+    if not books: # This condition catches the initial GET request and a failed/empty POST search
+        # Fetch 50 random books from the database
+        cursor = db.execute(
+            "SELECT * FROM books ORDER BY RANDOM() LIMIT 50"
+        )
+        books = cursor.fetchall()
+        # Ensure 'query' is empty so the HTML displays the correct header for random books
+        if is_search_executed:
+            query = ""
 
     return render_template('index.html', books=books, query=query)
 
