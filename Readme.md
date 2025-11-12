@@ -12,7 +12,7 @@ A00416, A00418, A00646, A04795, A07875, A08970
 
 I am running this server on Raspberry Pi.
 
-First, use the following command to create library.db from `book_ist.txt`:
+First, use the following command to create library.db from `book_list.txt`:
 
 ```sh
 cd flask
