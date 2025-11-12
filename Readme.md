@@ -7,3 +7,55 @@ A01100, A01102, A01124, A01129, A01131, A01219, A01220, A01224, A01225, A01229, 
 ## Todo
 
 A00416, A00418, A00646, A04795, A07875, A08970
+
+## Flask Server
+
+I am running this server on Raspberry Pi.
+
+First, use the following command to create library.db from `book_ist.txt`:
+
+```sh
+cd flask
+python create_library.py
+```
+
+Then, create virtual environment and install `Flask` and `gunicorn`:
+
+```sh
+mkdir -p ~/venv
+python -m venv ~/venv/amazon_kindle
+pip install Flask gunicorn
+```
+
+Activate the environment, and test if the code works:
+
+```sh
+source ~/venv/amazon_kindle/bin/activate
+gunicorn -w 4 -b 0.0.0.0:8000 app:app
+```
+
+If everything works all right, then you can create a Systemd Service file:
+
+```
+[Unit]
+Description=Gunicorn instance for Flask Book Server
+After=network.target
+
+[Service]
+User=pi
+Group=www-data
+WorkingDirectory=/home/pi/book-server/
+ExecStart=/home/pi/book-server/venv/bin/gunicorn -w 4 -b 0.0.0.0:8000 app:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Finally, enable and start the service:
+
+```sh
+sudo systemctl daemon-reload
+sudo systemctl start bookserver
+sudo systemctl enable bookserver # Enables it to start automatically on boot
+```
