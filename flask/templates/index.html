@@ -1,5 +1,50 @@
 <!doctype html>
-<title>Kindle书库</title>
+<html lang="en">
+<head>
+    <title>Kindle中文书库</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        /* Base styles for better readability */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 10px;
+        }
+
+        /* 1. Make the table fluid on small screens */
+        @media screen and (max-width: 600px) {
+
+            /* Allow the table container to scroll horizontally */
+            .table-container {
+                overflow-x: auto;
+                width: 100%;
+            }
+
+            /* Ensure the table width is natural so it triggers the scroll */
+            table {
+                width: 800px; /* Force a minimum width wider than the phone screen */
+                border-collapse: collapse;
+                font-size: 0.8em; /* Shrink text slightly */
+            }
+
+            /* Optional: Make the title column take up more space for readability */
+            td:nth-child(1), th:nth-child(1) {
+                min-width: 150px;
+            }
+
+            /* Ensure the search bar takes up the full width */
+            form input[type="text"] {
+                width: 80%;
+                box-sizing: border-box; /* Include padding/border in the element's total width */
+            }
+            form button {
+                width: 18%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body>
 <h1>📚 Kindle书库</h1>
 
 <form method="POST" action="/">
