@@ -19,22 +19,22 @@ cd flask
 python create_library.py
 ```
 
-Then, create virtual environment and install `Flask` and `gunicorn`:
+Then, create and activate the virtual environment:
 
 ```sh
 mkdir -p ~/venv
 python -m venv ~/venv/amazon_kindle
-pip install Flask gunicorn
+source ~/venv/amazon_kindle/bin/activate
 ```
 
-Activate the environment, and test if the code works:
+Install `Flask` and `gunicorn` and test if the code works:
 
 ```sh
-source ~/venv/amazon_kindle/bin/activate
+pip install Flask gunicorn
 gunicorn -w 4 -b 0.0.0.0:8000 app:app
 ```
 
-If everything works all right, then you can create a Systemd Service file:
+If everything works all right, then you can create a Systemd Service file `bookserver.service` in `/etc/systemd/system/`:
 
 ```
 [Unit]
