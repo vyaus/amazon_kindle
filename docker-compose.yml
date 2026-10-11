@@ -1,0 +1,11 @@
+services:
+  kindle-library:
+    container_name: amazon-kindle-library
+    image: amazon-kindle-library:latest
+    ports:
+      - "12345:12345"
+    environment:
+      DOWNLOAD_FOLDER: /books
+    volumes:
+      - ${BOOKS_DIR:-./Folder}:/books:ro
+    restart: unless-stopped

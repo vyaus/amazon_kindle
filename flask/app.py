@@ -3,8 +3,8 @@ import os, re
 from flask import Flask, render_template, request, url_for, g, abort, redirect, send_from_directory
 
 # --- Configuration ---
-DATABASE = 'library.db'
-DOWNLOAD_FOLDER = '../Folder'
+DATABASE = os.environ.get('DATABASE', 'library.db')
+DOWNLOAD_FOLDER = os.environ.get('DOWNLOAD_FOLDER', '../Folder')
 # Note: The 'Folder' directory must exist relative to where app.py is run.
 
 app = Flask(__name__)
@@ -153,7 +153,7 @@ def download(sn):
     # The actual download logic (requires Flask's send_from_directory for safety)
     # UNCOMMENT THE FOLLOWING LINES FOR PRODUCTION USE:
     return send_from_directory(
-        directory=os.path.abspath(DOWNLOAD_FOLDER), # Absolute path to 'Folder'
+        directory=os.path.abspath(app.config['DOWNLOAD_FOLDER']), # Absolute path to 'Folder'
         path=relative_path, # Path relative to the directory (e.g., 'Fiction/A16995.azw3')
         as_attachment=True
     )
