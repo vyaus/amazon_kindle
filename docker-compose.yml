@@ -7,5 +7,5 @@ services:
     environment:
       DOWNLOAD_FOLDER: /books
     volumes:
-      - ${BOOKS_DIR:-./Folder}:/books:ro
+      - ./Folder:/books:ro
     restart: unless-stopped
